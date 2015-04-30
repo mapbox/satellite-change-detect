@@ -25,11 +25,18 @@ then
 tiledelta comptiles [OPTIONS] FILEDIR COMPAREDIR
 
 Options:
-  -s, --sampling INTEGER
-  -f, --filetype TEXT
-  -p, --plotdir PATH
+  -s, --sampling INTEGER (sampling stride to speed up vectorization)
+  -f, --filetype TEXT (valid file extension)
+  -p, --plotdir PATH (where to save plots to - optional)
   --help                  Show this message and exit.
 ```
+NOTE: Input filenames need to fit this format!
+```
+{prefix}-{x}-{y}-{z}.{ext}
+```
+
+###  Tile w/ Tippecanoe
+
 eg
 
 ```
