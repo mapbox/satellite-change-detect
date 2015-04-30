@@ -19,7 +19,11 @@ then
 
 `pip install -e .`
 
-### Usage
+### Usage - api
+
+`tiledelta.compareGreys(before_array, after_array, high_percentile, mid_percentile)`
+
+### CLI usage
 
 ```
 tiledelta comptiles [OPTIONS] FILEDIR COMPAREDIR
