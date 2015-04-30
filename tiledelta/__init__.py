@@ -3,10 +3,9 @@
 from rasterio import features, Affine
 from shapely.geometry import Polygon, MultiPolygon, mapping
 
-from skimage.filters import roberts
+from skimage.filters import roberts, scharr
 from sklearn import decomposition
 import numpy as np
-from scipy.ndimage.filters import maximum_filter
 import json
 
 def compareGreys(greyimage_before, greyimage_after, high_percentile=10, mid_percentile=20):
@@ -22,7 +21,6 @@ def compareGreys(greyimage_before, greyimage_after, high_percentile=10, mid_perc
     pca = decomposition.PCA(n_components=2, whiten=False)
     pca.fit(delta)
     XY = pca.transform(delta)[:,1].reshape(greyimage_before.shape)
-    XY = maximum_filter(XY, 3)
 
     # set areas below given percentile thresholds
     midperc = np.percentile(XY, mid_percentile)

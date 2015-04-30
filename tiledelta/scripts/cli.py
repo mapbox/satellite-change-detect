@@ -4,7 +4,6 @@ import rasterio as rio
 import numpy as np
 import click, json, os
 import tiledelta, mercantile
-from scipy.ndimage.filters import minimum_filter, maximum_filter
 
 @click.group()
 def cli():
@@ -31,9 +30,11 @@ cli.add_command(loaddata)
 @click.argument('filedir', type=click.Path(exists=True))
 @click.argument('comparedir', type=click.Path(exists=True))
 @click.option('--sampling', '-s', type=(int), default=0)
-def compimage(filedir, comparedir, sampling):
+@click.option('--filetype', '-f', type=(str), default='png')
+@click.option('--plotdir', '-p', type=click.Path(exists=True))
+def comptiles(filedir, comparedir, sampling, filetype):
 
-    plotdir = '/Users/dnomadb/Documents/pcomp'
+    # plotdir = '/Users/dnomadb/Documents/pcomp'
 
     files = os.listdir(filedir)
     cfiles = os.listdir(comparedir)
@@ -43,7 +44,7 @@ def compimage(filedir, comparedir, sampling):
 
     for f in files:
         fileinfo = f.split('-')
-        if len(fileinfo[-1].split('.')) != 0 and fileinfo[-1].split('.')[-1] == 'png':
+        if len(fileinfo[-1].split('.')) != 0 and fileinfo[-1].split('.')[-1] == filetype:
             x, y, z = tiledelta.getXYZ(fileinfo)
             bbox = mercantile.bounds(x, y, z)
             with rio.drivers():
@@ -54,9 +55,6 @@ def compimage(filedir, comparedir, sampling):
                 
                 pcplo = tiledelta.compareGreys(greyimage_after, greyimage_before, 10, 20)
                 pcplo = pcplo[::sampling,::sampling]
-
-                tiledelta.makeVectors(pcplo, tiledelta.makeAffine(pcplo.shape, bbox))
-
                 
                 if plotdir:
                     fig = plot.figure(figsize=(20,10))
@@ -67,8 +65,11 @@ def compimage(filedir, comparedir, sampling):
                     pc2 = fig.add_subplot(133)
                     pc2.imshow(pcplo, cmap='YlGnBu')
                     fig.savefig(os.path.join(plotdir, f))
+                else:
+                    tiledelta.makeVectors(pcplo, tiledelta.makeAffine(pcplo.shape, bbox))
 
-cli.add_command(compimage)
+
+cli.add_command(comptiles)
 
 
 if __name__ == '__main__':

@@ -25,7 +25,8 @@ setup(name='tiledelta',
           'rasterio',
           'scipy',
           'scikit-learn',
-          'mercantile'
+          'mercantile',
+          'shapely'
       ],
       extras_require={
           'test': ['pytest'],
