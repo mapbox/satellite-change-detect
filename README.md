@@ -1,6 +1,8 @@
 # satellite-change-detect
 =========================
 
+![](![image](https://cloud.githubusercontent.com/assets/5084513/7424337/ad447c44-ef54-11e4-926e-c81329bdc7ae.png))
+
 ## tiledelta [very dev]
 
 Given input directories of before and after image tiles, calculates relative change by:
